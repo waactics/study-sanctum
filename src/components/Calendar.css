@@ -1,0 +1,125 @@
+.calendar {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  font-family: inherit;
+  color: #1f2937;
+}
+
+.calendar__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.calendar__title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.calendar__header button {
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #fff;
+  color: inherit;
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.calendar__header button:hover {
+  background: #f3f4f6;
+}
+
+.calendar__weekdays,
+.calendar__grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.calendar__weekday {
+  padding: 0.5rem 0;
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #6b7280;
+}
+
+.calendar__grid {
+  border-top: 1px solid #e5e7eb;
+  border-left: 1px solid #e5e7eb;
+}
+
+.calendar__cell {
+  position: relative;
+  min-height: 110px;
+  border-right: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+  background: #fff;
+}
+
+.calendar__cell--blank {
+  background: #f9fafb;
+}
+
+.calendar__cell--today {
+  background: #eff6ff;
+}
+
+.calendar__day-number {
+  position: absolute;
+  top: 6px;
+  left: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  pointer-events: none;
+}
+
+.calendar__cell--today .calendar__day-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.5rem;
+  height: 1.5rem;
+  top: 4px;
+  left: 6px;
+  border-radius: 999px;
+  background: #2563eb;
+  color: #fff;
+}
+
+.calendar__note {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  min-height: 110px;
+  padding: 2rem 8px 8px;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 0.85rem;
+  resize: none;
+}
+
+.calendar__note:focus {
+  outline: 2px solid #2563eb;
+  outline-offset: -2px;
+}
+
+@media (max-width: 600px) {
+  .calendar__cell,
+  .calendar__note {
+    min-height: 80px;
+  }
+
+  .calendar__note {
+    font-size: 0.75rem;
+  }
+}
