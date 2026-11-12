@@ -2,6 +2,10 @@
   width: 100%;
   max-width: 1000px;
   margin: 0 auto;
+  padding: 1rem;
+  border: 2px solid #1f2937;
+  border-radius: 12px;
+  background: #fff;
   font-family: inherit;
   color: #1f2937;
 }
@@ -17,6 +21,7 @@
   margin: 0;
   font-size: 1.5rem;
   font-weight: 600;
+  text-transform: lowercase;
 }
 
 .calendar__header button {
@@ -46,7 +51,7 @@
   text-align: center;
   font-size: 0.8rem;
   font-weight: 600;
-  text-transform: uppercase;
+  text-transform: lowercase;
   letter-spacing: 0.05em;
   color: #6b7280;
 }
@@ -74,11 +79,27 @@
 
 .calendar__day-number {
   position: absolute;
-  top: 6px;
-  left: 8px;
+  top: 4px;
+  left: 6px;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.75rem;
+  height: 1.75rem;
+  padding: 0 4px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
   font-size: 0.85rem;
   font-weight: 600;
-  pointer-events: none;
+  cursor: pointer;
+}
+
+.calendar__day-number:hover {
+  background: rgba(0, 0, 0, 0.08);
 }
 
 .calendar__cell--today .calendar__day-number {
@@ -92,6 +113,10 @@
   border-radius: 999px;
   background: #2563eb;
   color: #fff;
+}
+
+.calendar__cell--marked {
+  background: #dcfce7;
 }
 
 .calendar__note {

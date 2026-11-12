@@ -1,0 +1,51 @@
+.landing {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.landing__grid {
+  width: 100%;
+  max-width: 900px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+.landing__card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  aspect-ratio: 6 / 4;
+  padding: 2rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #fff;
+  color: #1f2937;
+  text-decoration: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.landing__card:hover,
+.landing__card:focus-visible {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.landing__card-title {
+  margin: 0 0 0.5rem;
+  font-size: 1.25rem;
+}
+
+.landing__card-text {
+  margin: 0;
+  color: #6b7280;
+}
+
+@media (max-width: 600px) {
+  .landing__grid {
+    grid-template-columns: 1fr;
+  }
+}

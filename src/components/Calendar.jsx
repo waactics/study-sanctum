@@ -5,11 +5,11 @@ const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
 const pad = (n) => String(n).padStart(2, '0')
 
-// Notes are keyed by "YYYY-MM-DD" (month is 0-based in, 1-based out).
+// Notes and marks are keyed by "YYYY-MM-DD" (month is 0-based in, 1-based out).
 export const toDateKey = (year, month, day) =>
   `${year}-${pad(month + 1)}-${pad(day)}`
 
-function DayCell({ day, dateKey, value, isToday, onCommit }) {
+function DayCell({ day, dateKey, value, isToday, isMarked, onCommit, onToggleMark }) {
   const [draft, setDraft] = useState(value)
 
   // Keep the draft in sync when notes are loaded or changed from outside.
@@ -21,9 +21,25 @@ function DayCell({ day, dateKey, value, isToday, onCommit }) {
     if (draft !== value) onCommit(dateKey, draft)
   }
 
+  const className = [
+    'calendar__cell',
+    isToday && 'calendar__cell--today',
+    isMarked && 'calendar__cell--marked',
+  ]
+    .filter(Boolean)
+    .join(' ')
+
   return (
-    <div className={`calendar__cell${isToday ? ' calendar__cell--today' : ''}`}>
-      <span className="calendar__day-number">{day}</span>
+    <div className={className}>
+      <button
+        type="button"
+        className="calendar__day-number"
+        onClick={() => onToggleMark(dateKey, !isMarked)}
+        aria-pressed={isMarked}
+        aria-label={`Mark ${dateKey}`}
+      >
+        {day}
+      </button>
       <textarea
         className="calendar__note"
         value={draft}
@@ -37,14 +53,18 @@ function DayCell({ day, dateKey, value, isToday, onCommit }) {
 
 /**
  * Props (all optional):
- * - notes:         { 'YYYY-MM-DD': 'text' }. If provided, the calendar is controlled.
- * - onNoteChange:  (dateKey, text) => void. Fires when a day's note loses focus after a change.
+ * - notes:         { 'YYYY-MM-DD': 'text' }. If provided, notes are controlled.
+ * - onNoteChange:  (dateKey, text) => void. Fires when a note loses focus after a change.
+ * - marks:         { 'YYYY-MM-DD': true }. Days shown green. If provided, marks are controlled.
+ * - onMarkChange:  (dateKey, isMarked) => void. Fires when a day is clicked.
  * - onMonthChange: (year, month) => void. Fires on prev/next (month is 0-based).
  * - initialDate:   Date used to pick the starting month. Defaults to today.
  */
 export default function Calendar({
   notes,
   onNoteChange,
+  marks,
+  onMarkChange,
   onMonthChange,
   initialDate,
 }) {
@@ -53,9 +73,10 @@ export default function Calendar({
     return { year: d.getFullYear(), month: d.getMonth() }
   })
   const [localNotes, setLocalNotes] = useState({})
+  const [localMarks, setLocalMarks] = useState({})
 
-  const isControlled = notes !== undefined
-  const data = isControlled ? notes : localNotes
+  const notesData = notes !== undefined ? notes : localNotes
+  const marksData = marks !== undefined ? marks : localMarks
 
   const { year, month } = view
   const today = new Date()
@@ -78,10 +99,17 @@ export default function Calendar({
   }
 
   const handleCommit = (dateKey, text) => {
-    if (!isControlled) {
+    if (notes === undefined) {
       setLocalNotes((prev) => ({ ...prev, [dateKey]: text }))
     }
     onNoteChange?.(dateKey, text)
+  }
+
+  const handleToggleMark = (dateKey, isMarked) => {
+    if (marks === undefined) {
+      setLocalMarks((prev) => ({ ...prev, [dateKey]: isMarked }))
+    }
+    onMarkChange?.(dateKey, isMarked)
   }
 
   const cells = []
@@ -97,9 +125,11 @@ export default function Calendar({
         key={dateKey}
         day={day}
         dateKey={dateKey}
-        value={data[dateKey] ?? ''}
+        value={notesData[dateKey] ?? ''}
         isToday={dateKey === todayKey}
+        isMarked={Boolean(marksData[dateKey])}
         onCommit={handleCommit}
+        onToggleMark={handleToggleMark}
       />,
     )
   }
@@ -107,11 +137,11 @@ export default function Calendar({
   return (
     <section className="calendar">
       <header className="calendar__header">
-        <button type="button" onClick={() => goToMonth(-1)} aria-label="Previous month">
+        <button type="button" onClick={() => goToMonth(-1)} aria-label="previous month">
           &#8249;
         </button>
         <h2 className="calendar__title">{monthLabel}</h2>
-        <button type="button" onClick={() => goToMonth(1)} aria-label="Next month">
+        <button type="button" onClick={() => goToMonth(1)} aria-label="next month">
           &#8250;
         </button>
       </header>

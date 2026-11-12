@@ -1,3 +1,16 @@
 .app {
   padding: 2rem 1rem;
 }
+
+.back-link {
+  display: inline-block;
+  max-width: 1000px;
+  margin: 0 auto 1rem;
+  color: #1f2937;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}

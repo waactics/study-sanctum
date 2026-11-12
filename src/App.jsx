@@ -1,12 +1,16 @@
-import { useState } from 'react'
-import Calendar from './components/Calendar'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Landing from './pages/Landing'
+import Homepage from './pages/Homepage'
 import './App.css'
 
 function App() {
   return (
-    <main className="app">
-      <Calendar />
-    </main>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/home" element={<Homepage />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 
